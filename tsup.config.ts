@@ -1,9 +1,17 @@
+import fs from 'fs'
 import { defineConfig } from 'tsup'
+import dotenv from 'dotenv'
+
+const env = dotenv.config({
+    path: '.env',
+})?.parsed || {}
+
+const banner = fs.readFileSync('./src/index.ts', 'utf8').match(/\/\/ ==UserScript==[\s\S]*?\/\/ ==\/UserScript==/)?.[0]
 
 export default defineConfig({
-    platform: 'node', // 目标平台
+    platform: 'browser', // 目标平台
     entry: ['src/index.ts'],
-    format: ['cjs', 'esm'],
+    format: ['cjs'],
     outExtension({ format }) {
         switch (format) {
             case 'cjs':
@@ -30,9 +38,9 @@ export default defineConfig({
         }
     },
     splitting: false, // 代码拆分
-    sourcemap: true,
+    sourcemap: false,
     clean: true,
-    dts: true,
+    dts: false,
     minify: false, // 缩小输出
     shims: true, // 注入 cjs 和 esm 填充代码，解决 import.meta.url 和 __dirname 的兼容问题
     esbuildOptions(options, context) { // 设置编码格式
@@ -41,4 +49,12 @@ export default defineConfig({
     // external: [], // 排除的依赖项
     // noExternal: [/(.*)/], // 将依赖打包到一个文件中
     // bundle: true,
+    banner: {
+        js: banner,
+    },
+    env: {
+        ...env,
+    },
+    define: {},
+    replaceNodeEnv: true,
 })

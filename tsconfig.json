@@ -29,7 +29,11 @@
             "dom.iterable",
             "scripthost"
         ],
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "types": [
+            "@types/tampermonkey",
+            "@types/node"
+        ]
     },
     "include": [
         "src/*.ts",

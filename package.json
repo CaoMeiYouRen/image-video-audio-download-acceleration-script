@@ -39,6 +39,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/debug": "^4.1.12",
     "@types/node": "^22.5.4",
+    "@types/tampermonkey": "^5.0.3",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "commitizen": "^4.3.0",
@@ -87,6 +88,7 @@
     "url": "https://github.com/CaoMeiYouRen/image-video-audio-download-acceleration-script/issues"
   },
   "dependencies": {
+    "dotenv": "^16.4.5",
     "tslib": "^2.7.0"
   },
   "pnpm": {
