@@ -15,7 +15,7 @@
 
     // 自定义CDN链接
     const cdnBaseUrl = process.env.CDN_BASE_URL || 'https://proxy.example.com/'
-    const isImageVideoAudioRegex = /\.(jpg|jpeg|png|gif|webp|bmp|ico|cur|heic|svg|mp3|m4a|aac|ogg|mid|midi|wav|mp4|mov|webm|mpg|mpeg|avi|ogv|flv|wmv)$/
+    const isImageVideoAudioRegex = /\.(jpg|jpeg|png|gif|webp|bmp|ico|cur|heic|svg|mp3|m4a|aac|ogg|mid|midi|wav|mp4|mov|webm|mpg|mpeg|avi|ogv|flv|wmv|zip|rar|7z|gz|tgz)$/
 
     // window.onload = () => {
     // 记录当前选择的媒体元素
