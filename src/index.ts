@@ -24,13 +24,18 @@
     // 为媒体元素添加右键菜单事件
     function addContextMenuEvent(element: Element) {
         if (element.tagName === 'A') { // 判断链接是否是 图片视频音频
-            // 判断链接末尾是否是 指定后缀名
-            const linkEle = element as HTMLLinkElement
-            const fullLink = linkEle.href
-            const url = new URL(fullLink)
-            const baseLink = url.origin + url.pathname // 去除参数的基础路径
-            // 如果两种情况都不符合，就排除
-            if (!isImageVideoAudioRegex.test(fullLink) && !isImageVideoAudioRegex.test(baseLink)) {
+            try {
+                // 判断链接末尾是否是 指定后缀名
+                const linkEle = element as HTMLLinkElement
+                const fullLink = linkEle.href
+                const url = new URL(fullLink)
+                const baseLink = url.origin + url.pathname // 去除参数的基础路径
+                // 如果两种情况都不符合，就排除
+                if (!isImageVideoAudioRegex.test(fullLink) && !isImageVideoAudioRegex.test(baseLink)) {
+                    return
+                }
+            } catch (error) {
+                console.error(error)
                 return
             }
         }
