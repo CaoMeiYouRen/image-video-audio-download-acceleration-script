@@ -17,59 +17,33 @@
     const cdnBaseUrl = process.env.CDN_BASE_URL || 'https://proxy.example.com/'
     const isImageVideoAudioRegex = /\.(jpg|jpeg|png|gif|webp|bmp|ico|cur|heic|svg|mp3|m4a|aac|ogg|mid|midi|wav|mp4|mov|webm|mpg|mpeg|avi|ogv|flv|wmv|zip|rar|7z|gz|tgz)$/
 
-    // window.onload = () => {
     // 记录当前选择的媒体元素
     let selectedMediaElement = null
 
-    // 为媒体元素添加右键菜单事件
-    function addContextMenuEvent(element: Element) {
-        if (element.tagName === 'A') { // 判断链接是否是 图片视频音频
-            try {
-                // 判断链接末尾是否是 指定后缀名
-                const linkEle = element as HTMLLinkElement
-                const fullLink = linkEle.href
-                const url = new URL(fullLink)
-                const baseLink = url.origin + url.pathname // 去除参数的基础路径
-                // 如果两种情况都不符合，就排除
-                if (!isImageVideoAudioRegex.test(fullLink) && !isImageVideoAudioRegex.test(baseLink)) {
+    document.body.addEventListener('contextmenu', (event) => {
+        const element = event.target as Element
+        if (!element) {
+            return
+        }
+        if (element.nodeType === Node.ELEMENT_NODE && ['IMG', 'VIDEO', 'AUDIO', 'A'].includes(element.tagName)) {
+            if (element.tagName === 'A') { // 判断链接是否是 图片视频音频
+                try {
+                    // 判断链接末尾是否是 指定后缀名
+                    const linkEle = element as HTMLLinkElement
+                    const fullLink = linkEle.href
+                    const url = new URL(fullLink)
+                    const baseLink = url.origin + url.pathname // 去除参数的基础路径
+                    // 如果两种情况都不符合，就排除
+                    if (!isImageVideoAudioRegex.test(fullLink) && !isImageVideoAudioRegex.test(baseLink)) {
+                        return
+                    }
+                } catch (error) {
+                    console.error(error)
                     return
                 }
-            } catch (error) {
-                console.error(error)
-                return
             }
-        }
-        element.addEventListener('contextmenu', (event) => {
             selectedMediaElement = element // 记录当前选择的媒体元素
-        })
-    }
-
-    // 获取所有图片、视频和音频元素
-    const mediaElements = document.querySelectorAll('img, video, audio, a')
-    // 为每个媒体元素添加右键菜单事件
-    mediaElements.forEach(addContextMenuEvent)
-
-    // 使用MutationObserver监听DOM变化
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            mutation.addedNodes.forEach((node) => {
-                if (node.nodeType === Node.ELEMENT_NODE) { // 检查是否为元素节点
-                    const ele = node as Element
-                    if (ele.matches('img, video, audio, a')) {
-                        addContextMenuEvent(ele)
-                    }
-                    // 递归检查子节点
-                    const childMediaElements = ele.querySelectorAll('img, video, audio, a')
-                    childMediaElements.forEach(addContextMenuEvent)
-                }
-            })
-        })
-    })
-
-    // 配置并启动MutationObserver
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true,
+        }
     })
 
     // 注册Tampermonkey菜单命令
@@ -82,5 +56,4 @@
         }
         alert('请先右键点击要下载的图片、视频或音频元素。')
     })
-    // }
 })()
